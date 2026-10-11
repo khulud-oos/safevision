@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}تسجيل جديد — SafeVision{% endblock %}
+
+{% block content %}
+<div class="register-wrapper">
+    <div class="card register-card fade-in">
+        <div class="register-header">
+            <div class="register-icon">🚀</div>
+            <h1>إنشاء حساب</h1>
+            <p>انضم إلى SafeVision</p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('register') }}">
+            <div class="form-group">
+                <label for="username">
+                    <i class="bi bi-person-fill"></i> اسم المستخدم
+                </label>
+                <input type="text" id="username" name="username" placeholder="أحمد" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">
+                    <i class="bi bi-envelope-fill"></i> البريد الإلكتروني
+                </label>
+                <input type="email" id="email" name="email" placeholder="user@example.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">
+                    <i class="bi bi-lock-fill"></i> كلمة المرور
+                </label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required minlength="6">
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm_password">
+                    <i class="bi bi-shield-lock-fill"></i> تأكيد كلمة المرور
+                </label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="••••••••" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full">
+                <i class="bi bi-person-plus-fill"></i> إنشاء الحساب
+            </button>
+        </form>
+        
+        <div class="register-footer">
+            <p>لديك حساب بالفعل؟ <a href="{{ url_for('login') }}">سجّل الدخول</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .register-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 200px);
+        padding: 20px;
+    }
+    
+    .register-card {
+        max-width: 480px;
+        width: 100%;
+        padding: 3rem 2.5rem;
+    }
+    
+    .register-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .register-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 20px rgba(0, 217, 192, 0.5));
+    }
+    
+    .register-header h1 {
+        font-size: 2rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #ffffff 0%, #00d9c0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+    }
+    
+    .register-header p {
+        color: #94a3b8;
+        font-size: 1rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.2rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+        color: #f0f4f8;
+        font-size: 0.95rem;
+    }
+    
+    .form-group label i {
+        color: #00d9c0;
+        margin-left: 5px;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        background: rgba(15, 23, 42, 0.6);
+        border: 2px solid rgba(0, 217, 192, 0.2);
+        border-radius: 12px;
+        color: #f0f4f8;
+        font-size: 1rem;
+        font-family: 'Cairo', sans-serif;
+        transition: all 0.3s ease;
+        direction: rtl;
+    }
+    
+    .form-group input:focus {
+        outline: none;
+        border-color: #00d9c0;
+        box-shadow: 0 0 0 4px rgba(0, 217, 192, 0.15);
+        background: rgba(15, 23, 42, 0.8);
+    }
+    
+    .form-group input::placeholder {
+        color: #64748b;
+    }
+    
+    .btn-full {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.05rem;
+        margin-top: 0.5rem;
+    }
+    
+    .register-footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(0, 217, 192, 0.15);
+    }
+    
+    .register-footer p {
+        color: #94a3b8;
+        font-size: 0.95rem;
+    }
+    
+    .register-footer a {
+        color: #00d9c0;
+        text-decoration: none;
+        font-weight: 700;
+        transition: all 0.3s;
+    }
+    
+    .register-footer a:hover {
+        text-shadow: 0 0 10px rgba(0, 217, 192, 0.5);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,330 @@
+{% extends "base.html" %}
+
+{% block title %}الرئيسية — SafeVision{% endblock %}
+
+{% block content %}
+<div class="index-wrapper fade-in">
+    <div class="hero">
+        <div class="hero-icon">🦺</div>
+        <h1>SafeVision</h1>
+        <p>نظام ذكي للتحقق من معدات السلامة في مواقع البناء</p>
+    </div>
+    
+    <div class="card upload-card">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="upload-box">
+                <div class="upload-icon">📸</div>
+                <p class="upload-text">اختر صورة العامل لتحليلها</p>
+                <input type="file" name="image" id="imageInput" accept="image/*" required>
+                <label for="imageInput" class="file-label">
+                    <i class="bi bi-cloud-upload"></i> اختيار ملف
+                </label>
+                <span id="fileName" class="file-name">لم يتم اختيار ملف</span>
+                <button type="submit" class="btn btn-primary btn-analyze">
+                    <i class="bi bi-stars"></i> تحليل الصورة
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    {% if report %}
+    <div class="report-section fade-in">
+        <div class="card score-card">
+            <div class="score-label">Safety Score</div>
+            <div class="score-value {% if score >= 80 %}score-high{% elif score >= 50 %}score-mid{% else %}score-low{% endif %}">
+                {{ score }}%
+            </div>
+            <div class="score-bar">
+                <div class="score-bar-fill" style="width: {{ score }}%;"></div>
+            </div>
+        </div>
+        
+        <div class="card report-card">
+            <h3><i class="bi bi-clipboard-check"></i> تقرير السلامة</h3>
+            <div class="report-items">
+                {% for item in report %}
+                    {% set parts = item.split(" — ") %}
+                    <div class="report-item {% if '✅' in item %}detected{% else %}missing{% endif %}">
+                        <span class="report-name">{{ parts[0] }}</span>
+                        <span class="report-status">
+                            {% if '✅' in item %}
+                                <i class="bi bi-check-circle-fill"></i> موجود
+                            {% else %}
+                                <i class="bi bi-x-circle-fill"></i> غير موجود
+                            {% endif %}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            {% if score < 100 %}
+                <div class="warning-box">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    يُنصح بالتأكد من ارتداء معدات الحماية الناقصة قبل بدء العمل
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="images-container fade-in">
+        <div class="card image-card">
+            <h4><i class="bi bi-image"></i> الصورة الأصلية</h4>
+            <img src="{{ url_for('static', filename=original) }}" alt="الصورة الأصلية">
+        </div>
+        <div class="card image-card">
+            <h4><i class="bi bi-magic"></i> نتيجة التحليل</h4>
+            <img src="{{ url_for('static', filename=result) }}" alt="نتيجة التحليل">
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .index-wrapper {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    
+    .hero {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+    
+    .hero-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 20px rgba(0, 217, 192, 0.5));
+    }
+    
+    .hero h1 {
+        font-size: 3rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #ffffff 0%, #00d9c0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+    }
+    
+    .hero p {
+        color: #94a3b8;
+        font-size: 1.1rem;
+    }
+    
+    .upload-card {
+        margin-bottom: 2rem;
+    }
+    
+    .upload-box {
+        text-align: center;
+        padding: 2rem;
+        border: 2px dashed rgba(0, 217, 192, 0.4);
+        border-radius: 16px;
+        transition: all 0.3s;
+    }
+    
+    .upload-box:hover {
+        border-color: #00d9c0;
+        background: rgba(0, 217, 192, 0.05);
+    }
+    
+    .upload-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .upload-text {
+        color: #94a3b8;
+        font-size: 1.05rem;
+        margin-bottom: 1rem;
+    }
+    
+    input[type="file"] {
+        display: none;
+    }
+    
+    .file-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.8rem 1.8rem;
+        background: rgba(0, 217, 192, 0.15);
+        color: #00d9c0;
+        border: 2px solid #00d9c0;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: all 0.3s;
+        margin-left: 10px;
+    }
+    
+    .file-label:hover {
+        background: #00d9c0;
+        color: #0f172a;
+    }
+    
+    .file-name {
+        color: #94a3b8;
+        font-size: 0.9rem;
+        display: block;
+        margin-top: 0.8rem;
+    }
+    
+    .btn-analyze {
+        margin-top: 1.5rem;
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+    }
+    
+    .report-section {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .score-card {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .score-label {
+        color: #94a3b8;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .score-value {
+        font-size: 5rem;
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 30px rgba(0, 217, 192, 0.5));
+    }
+    
+    .score-high { color: #10b981; }
+    .score-mid { color: #fbbf24; }
+    .score-low { color: #ef4444; }
+    
+    .score-bar {
+        height: 10px;
+        background: rgba(15, 23, 42, 0.6);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 1rem;
+    }
+    
+    .score-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #ef4444 0%, #fbbf24 50%, #10b981 100%);
+        border-radius: 10px;
+        transition: width 1s ease;
+    }
+    
+    .report-card h3 {
+        color: #00d9c0;
+        font-size: 1.2rem;
+        margin-bottom: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .report-items {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+    
+    .report-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 1rem;
+        background: rgba(15, 23, 42, 0.4);
+        border-radius: 10px;
+        border-right: 3px solid transparent;
+        transition: all 0.3s;
+    }
+    
+    .report-item.detected {
+        border-right-color: #10b981;
+    }
+    
+    .report-item.missing {
+        border-right-color: #ef4444;
+    }
+    
+    .report-name {
+        color: #f0f4f8;
+        font-weight: 600;
+    }
+    
+    .report-status {
+        font-size: 0.9rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .detected .report-status { color: #10b981; }
+    .missing .report-status { color: #ef4444; }
+    
+    .warning-box {
+        margin-top: 1.2rem;
+        padding: 1rem;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        border-radius: 12px;
+        color: #ef4444;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .images-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+    
+    .image-card {
+        padding: 1.2rem;
+    }
+    
+    .image-card h4 {
+        color: #00d9c0;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .image-card img {
+        width: 100%;
+        border-radius: 12px;
+        display: block;
+    }
+    
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 2rem; }
+        .report-section { grid-template-columns: 1fr; }
+        .images-container { grid-template-columns: 1fr; }
+        .score-value { font-size: 3.5rem; }
+    }
+</style>
+
+<script>
+    document.getElementById('imageInput').addEventListener('change', function(e) {
+        const fileName = e.target.files[0]?.name || 'لم يتم اختيار ملف';
+        document.getElementById('fileName').textContent = fileName;
+    });
+</script>
+{% endblock %}

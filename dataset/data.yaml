@@ -1,0 +1,22 @@
+path: ./dataset_merged
+train: train/images
+val: valid/images
+
+names:
+  0: barricade
+  1: dumpster
+  2: excavators
+  3: gloves
+  4: hardhat
+  5: mask
+  6: no-hardhat
+  7: no-mask
+  8: no-safety vest
+  9: person
+  10: safety net
+  11: safety shoes
+  12: safety vest
+  13: dump truck
+  14: mini-van
+  15: truck
+  16: wheel loader

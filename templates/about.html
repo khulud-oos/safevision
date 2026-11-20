@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}About — SafeVision{% endblock %}
+
+{% block content %}
+<div class="about-wrapper fade-in">
+    <div class="about-header">
+        <div class="about-icon">🦺</div>
+        <h1>About SafeVision</h1>
+        <p>Smart system for verifying safety equipment on construction sites</p>
+    </div>
+    
+    <div class="about-grid">
+        <div class="card about-card">
+            <div class="card-icon">🎯</div>
+            <h3>Objective</h3>
+            <p>Promoting awareness of the importance of safety equipment, assisting in the rapid verification of protective gear, and reducing the likelihood of starting work without essential safety equipment.</p>
+        </div>
+        
+        <div class="card about-card">
+            <div class="card-icon">🤖</div>
+            <h3>Technologies</h3>
+            <ul>
+                <li>YOLOv8 (Object Detection)</li>
+                <li>Python + Flask</li>
+                <li>OpenCV + PyTorch</li>
+                <li>HTML5 + CSS3</li>
+            </ul>
+        </div>
+        
+        <div class="card about-card">
+            <div class="card-icon">📊</div>
+            <h3>Training</h3>
+            <ul>
+                <li>307 Training Images</li>
+                <li>57 Validation Images</li>
+                <li>50 Epochs</li>
+                <li>17 Classes</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="card note-card">
+        <div class="note-icon">⚠️</div>
+        <div>
+            <h3>Important Note</h3>
+            <p>This system is an assistive and awareness tool, and is not a substitute for the safety officer or official safety procedures at the construction site.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .about-wrapper {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    
+    .about-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .about-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 20px rgba(0, 217, 192, 0.5));
+    }
+    
+    .about-header h1 {
+        font-size: 2.5rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #ffffff 0%, #00d9c0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+    }
+    
+    .about-header p {
+        color: #94a3b8;
+        font-size: 1.1rem;
+    }
+    
+    .about-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .about-card {
+        text-align: center;
+        padding: 2rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .about-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(0, 217, 192, 0.4);
+        box-shadow: 0 15px 50px rgba(0, 217, 192, 0.2);
+    }
+    
+    .card-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .about-card h3 {
+        color: #00d9c0;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .about-card p {
+        color: #94a3b8;
+        line-height: 1.7;
+        font-size: 0.95rem;
+    }
+    
+    .about-card ul {
+        list-style: none;
+        padding: 0;
+        text-align: left; /* Changed from right to left for English */
+    }
+    
+    .about-card ul li {
+        color: #94a3b8;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(0, 217, 192, 0.1);
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .about-card ul li::before {
+        content: "▸";
+        color: #00d9c0;
+        font-weight: bold;
+    }
+    
+    .note-card {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.5rem 2rem;
+        background: rgba(239, 68, 68, 0.08);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    
+    .note-icon {
+        font-size: 2.5rem;
+        flex-shrink: 0;
+    }
+    
+    .note-card h3 {
+        color: #ef4444;
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .note-card p {
+        color: #94a3b8;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    @media (max-width: 768px) {
+        .about-header h1 { font-size: 1.8rem; }
+        .note-card { flex-direction: column; text-align: center; }
+    }
+</style>
+{% endblock %}

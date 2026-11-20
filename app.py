@@ -25,8 +25,8 @@ login_manager.login_message_category = 'info'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# Load trained model
-model = YOLO("runs/detect/runs/safevision_train_v4/weights/best.pt")
+# تم تعطيل التحميل هنا عشان نخفف الضغط على السيرفر
+# model = YOLO("runs/detect/runs/safevision_train_v4/weights/best.pt")
 
 REQUIRED = {
     "hardhat": "⛑ Hard Hat",
@@ -70,7 +70,6 @@ def register():
         password = request.form.get('password')
         confirm = request.form.get('confirm_password')
         
-        # Validate inputs
         if password != confirm:
             flash('Passwords do not match', 'danger')
             return redirect(url_for('register'))
@@ -83,7 +82,6 @@ def register():
             flash('Username is already taken', 'danger')
             return redirect(url_for('register'))
         
-        # Create user
         new_user = User(
             username=username,
             email=email,
@@ -126,11 +124,14 @@ def index():
         if not file:
             return 'No file uploaded', 400
         
+        # تحميل الموديل هنا (Lazy Loading) بدل ما كان في بداية الملف
+        global model
+        model = YOLO("runs/detect/runs/safevision_train_v4/weights/best.pt")
+        
         filename = secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
         
-        # Analyze image
         results = model(filepath, conf=0.1)
         
         detected = set()
@@ -150,7 +151,6 @@ def index():
         output_path = os.path.join(app.config['UPLOAD_FOLDER'], f'result_{filename}')
         results[0].save(output_path)
         
-        # Save analysis to database
         analysis = Analysis(
             user_id=current_user.id,
             image_path=filepath,
@@ -174,7 +174,7 @@ def index():
 
 # ==================== Main ====================
 
-if __name__ == '__main__':
+if name == '__main__':
     with app.app_context():
         db.create_all()
         print('✅ Database initialized!')
